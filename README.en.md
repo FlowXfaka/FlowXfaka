@@ -25,6 +25,18 @@ FlowXfaka is an open-source Laravel 12 based faka system for digital goods sales
 4. Open `https://your-domain/install`
 5. Keep at least one queue worker running
 
+## Rewrite
+
+Nginx:
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+```
+
+Apache: point the document root to `public/` and enable `mod_rewrite`.
+
 ## Queue
 
 ```bash
