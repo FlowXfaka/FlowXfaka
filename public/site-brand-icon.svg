@@ -1,0 +1,14 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brandGradient" x1="20" y1="18" x2="104" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EC4899"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="softShadow" x="0" y="0" width="128" height="128" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#6D28D9" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect x="14" y="14" width="100" height="100" rx="50" fill="url(#brandGradient)" filter="url(#softShadow)"/>
+  <path d="M79.34 44.11C75.69 40.46 70.64 38.2 64.98 38.2C53.68 38.2 44.52 47.36 44.52 58.67C44.52 69.97 53.68 79.13 64.98 79.13C70.43 79.13 75.38 76.99 79.01 73.5L72.67 67.16C70.65 69 67.97 70.13 65.02 70.13C58.69 70.13 53.56 65 53.56 58.67C53.56 52.34 58.69 47.21 65.02 47.21C68.1 47.21 70.9 48.42 72.96 50.39L79.34 44.11Z" fill="white"/>
+  <path d="M85.39 53.22C87.25 56.23 88.32 59.78 88.32 63.57C88.32 74.87 79.16 84.03 67.86 84.03C56.56 84.03 47.4 74.87 47.4 63.57C47.4 61.84 47.61 60.16 48.02 58.55L38.73 58.55C38.39 60.18 38.2 61.86 38.2 63.57C38.2 79.95 51.48 93.23 67.86 93.23C84.24 93.23 97.52 79.95 97.52 63.57C97.52 55.93 94.63 48.97 89.88 43.73L85.39 53.22Z" fill="white" fill-opacity="0.92"/>
+</svg>

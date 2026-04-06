@@ -1,0 +1,20 @@
+[Unit]
+Description=FlowX Laravel Queue Worker
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/path/to/flowx
+# Replace `database` with `redis` if you enabled Redis during installation.
+ExecStart=/usr/bin/php artisan queue:work database --queue=payments,fulfillment,default --sleep=1 --tries=3 --timeout=90 --backoff=5 --max-time=3600 --memory=256 --no-interaction
+ExecReload=/usr/bin/php artisan queue:restart
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
