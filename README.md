@@ -1,63 +1,67 @@
 # FlowXfaka
 
-FlowXfaka is a Laravel 12 based storefront and card delivery system.
+[中文](./README.md) | [English](./README.en.md)
 
-## Requirements
+FlowXfaka 是一个基于 Laravel 12 的开源发卡系统，面向数字商品售卖、订单支付、自动发货与后台运营管理场景。
+
+## 项目简介
+
+这个项目提供了一套完整的数字商品售卖链路：
+
+- 前台商品展示与下单
+- 支付宝 / 微信支付接入
+- 支付确认后的自动发货
+- 商品、卡密、订单、支付渠道后台管理
+- 前台主题、背景图、品牌图标等站点外观配置
+- 浏览器安装与 CLI 安装两种初始化方式
+
+## 适用场景
+
+- 卡密、兑换码、激活码等数字商品售卖
+- 小型到中型的自动发货站点
+- 需要自托管、可二开的 Laravel 发卡系统
+
+## 环境要求
 
 - PHP 8.2+
-- MySQL 8+ or MariaDB 10.6+
+- MySQL 8+ 或 MariaDB 10.6+
 - Composer 2
-- Redis is optional, but recommended for higher traffic
+- Redis 可选，较高流量场景建议启用
 
-## Fast path
+## 快速开始
 
-1. Install dependencies:
+1. 安装依赖
 
-   ```bash
-   composer install --no-dev --optimize-autoloader
-   ```
+```bash
+composer install --no-dev --optimize-autoloader
+```
 
-2. Run either installer entry:
+2. 选择一种初始化方式
 
-   Browser:
+浏览器安装：
 
-   ```text
-   https://your-domain.example/install
-   ```
+```text
+https://your-domain.example/install
+```
 
-   If the web server user cannot create new files in the project root, create an empty writable `.env` first.
+如果 Web 服务器用户没有项目根目录写权限，请先手动创建一个可写的空 `.env` 文件。
 
-   CLI:
+CLI 安装：
 
-   ```bash
-   php artisan app:install
-   ```
+```bash
+php artisan app:install
+```
 
-The installer will:
+安装器会自动完成以下动作：
 
-- write or update `.env`
-- generate `APP_KEY`
-- run pending migrations
-- create or update the first admin account
-- initialize `site_settings`
-- write `storage/app/install.lock`
+- 写入或更新 `.env`
+- 生成 `APP_KEY`
+- 执行数据库迁移
+- 创建或更新首个管理员账号
+- 初始化 `site_settings`
+- 写入 `storage/app/install.lock`
 
-## Redis and fallback mode
-
-Redis is not mandatory for a clean install.
-
-- If Redis is enabled during install:
-  - `SESSION_DRIVER=redis`
-  - `CACHE_STORE=redis`
-  - `QUEUE_CONNECTION=redis`
-- If Redis is left off:
-  - `SESSION_DRIVER=file`
-  - `CACHE_STORE=database`
-  - `QUEUE_CONNECTION=database`
-
-This means a bare MySQL-only deployment can still complete successfully.
-
-## Non-interactive CLI install
+## 非交互 CLI 安装
 
 ```bash
 php artisan app:install \
@@ -72,36 +76,45 @@ php artisan app:install \
   --db-password="secret"
 ```
 
-Add `--use-redis --redis-host=127.0.0.1 --redis-port=6379` if you want the Redis profile from the first install.
+如果你希望首次安装就启用 Redis，可额外传入：
 
-Use `--force` to re-run initialization after `install.lock` already exists.
+```bash
+--use-redis --redis-host=127.0.0.1 --redis-port=6379
+```
 
-## Queue worker
+如果 `install.lock` 已存在，需要重新初始化时可使用：
 
-Automatic payment confirmation and card delivery rely on a queue worker.
+```bash
+php artisan app:install --force
+```
 
-Database queue profile:
+## 队列与发货
+
+支付确认与自动发货依赖队列 Worker。
+
+数据库队列示例：
 
 ```bash
 php artisan queue:work database --queue=payments,fulfillment,default --sleep=1 --tries=3 --timeout=90
 ```
 
-Redis queue profile:
+Redis 队列示例：
 
 ```bash
 php artisan queue:work redis --queue=payments,fulfillment,default --sleep=1 --tries=3 --timeout=90
 ```
 
-If you use `systemd`, adapt the bundled `flowx-queue.service` file.
+如果你使用 `systemd`，可以基于仓库内的 [flowx-queue.service](./flowx-queue.service) 继续调整。
 
-## Web server
+## 部署说明
 
-- Point Nginx or Apache to `public/`
-- Keep `public/uploads/` writable for image uploads
-- Keep `APP_URL` accurate before enabling payment callbacks
-- Keep at least one queue worker alive in production
+- Nginx / Apache 站点根目录必须指向 `public/`
+- `public/uploads/` 需要保持可写
+- 正式环境请确保 `APP_URL` 与真实域名一致
+- 正式环境至少保持一个队列 Worker 常驻
+- 如果不开 Redis，也可以使用 MySQL + database queue 完成基础部署
 
-## Useful commands
+## 常用命令
 
 ```bash
 php artisan admin:reset-password
@@ -109,10 +122,15 @@ php artisan app:install --force
 php artisan migrate --force
 ```
 
-## License
+## 开发与贡献
 
-This project is licensed under the GNU Affero General Public License v3.0 only.
+欢迎提交 Issue 和 Pull Request。  
+如果你计划长期二开或对外部署，请先阅读许可证要求，并在修改后保留必要的版权与协议说明。
 
-- SPDX identifier: `AGPL-3.0-only`
-- Full license text: [LICENSE](LICENSE)
-- If you modify and deploy this project for network use, you must provide the corresponding source under the same license.
+## 许可证
+
+本项目使用 GNU Affero General Public License v3.0 only 发布。
+
+- SPDX 标识符：`AGPL-3.0-only`
+- 完整协议文本见：[LICENSE](./LICENSE)
+- 如果你修改并通过网络方式部署本项目，需要按 AGPL 要求提供对应源码
